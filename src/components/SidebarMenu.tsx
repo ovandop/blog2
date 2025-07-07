@@ -1,12 +1,12 @@
 import React from 'react';
-import { X, Home, Activity, Heart, Star, Settings, User, LogOut, Users } from 'lucide-react';
+import { X, Home, Activity, Settings, User, LogOut, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 interface SidebarMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  currentView: 'home' | 'activities' | 'personal' | 'reflections' | 'dashboard' | 'social';
-  onViewChange: (view: 'home' | 'activities' | 'personal' | 'reflections' | 'dashboard' | 'social') => void;
+  currentView: 'social' | 'activities' | 'dashboard' | 'profile' | 'home';
+  onViewChange: (view: 'social' | 'activities' | 'dashboard' | 'profile' | 'home') => void;
 }
 
 export const SidebarMenu: React.FC<SidebarMenuProps> = ({ 
@@ -18,12 +18,14 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
   const { user, logout } = useAuth();
 
   const menuItems = [
-    { id: 'home', label: 'Inicio', icon: Home },
+    { id: 'social', label: 'Feed Social', icon: Users },
     { id: 'activities', label: 'Actividades', icon: Activity },
-    { id: 'personal', label: 'Vida Personal', icon: Heart },
-    { id: 'reflections', label: 'Reflexiones', icon: Star },
-    { id: 'social', label: 'Social', icon: Users },
   ];
+
+  const userMenuItems = user ? [
+    { id: 'home', label: 'Mi Inicio', icon: Home },
+    { id: 'dashboard', label: 'Publicar', icon: Settings },
+  ] : [];
 
   return (
     <>
@@ -47,7 +49,7 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
                 <span className="text-xl font-bold text-teal-600">MC</span>
               </div>
               <div className="text-white">
-                <h2 className="text-lg font-bold">Mi Blog</h2>
+                <h2 className="text-lg font-bold">Mi Blog Social</h2>
                 <p className="text-sm text-teal-100">Menú Principal</p>
               </div>
             </div>
@@ -77,6 +79,7 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {/* Navigation Menu */}
           <nav className="flex-1 p-4">
             <div className="space-y-2">
+              {/* Public menu items */}
               {menuItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = currentView === item.id;
@@ -97,19 +100,30 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
                 );
               })}
 
-              {/* Dashboard - Only for logged in users */}
+              {/* User-specific menu items */}
               {user && (
-                <button
-                  onClick={() => onViewChange('dashboard')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 border-2 border-black ${
-                    currentView === 'dashboard'
-                      ? 'bg-emerald-500 text-white shadow-lg'
-                      : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 bg-white'
-                  }`}
-                >
-                  <Settings size={20} />
-                  <span className="font-medium">Dashboard</span>
-                </button>
+                <>
+                  <div className="border-t-2 border-gray-200 my-4"></div>
+                  {userMenuItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = currentView === item.id;
+                    
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => onViewChange(item.id as any)}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 border-2 border-black ${
+                          isActive
+                            ? 'bg-emerald-500 text-white shadow-lg'
+                            : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 bg-white'
+                        }`}
+                      >
+                        <Icon size={20} />
+                        <span className="font-medium">{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </>
               )}
             </div>
           </nav>

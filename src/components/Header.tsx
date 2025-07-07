@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { User, LogOut, BookOpen, Menu, X, Settings } from 'lucide-react';
+import { User, LogOut, Menu, X, Settings, Home, Activity } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { SidebarMenu } from './SidebarMenu';
 
 interface HeaderProps {
   onAuthClick: () => void;
-  currentView: 'home' | 'activities' | 'personal' | 'reflections' | 'dashboard' | 'social';
-  onViewChange: (view: 'home' | 'activities' | 'personal' | 'reflections' | 'dashboard' | 'social') => void;
+  currentView: 'social' | 'activities' | 'dashboard' | 'profile' | 'home';
+  onViewChange: (view: 'social' | 'activities' | 'dashboard' | 'profile' | 'home') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ onAuthClick, currentView, onViewChange }) => {
@@ -48,15 +48,9 @@ export const Header: React.FC<HeaderProps> = ({ onAuthClick, currentView, onView
               >
                 <Menu size={20} />
               </button>
-              <div className="bg-gradient-to-r from-teal-500 to-emerald-600 p-1.5 sm:p-2 rounded-lg border-2 border-black">
-                <BookOpen className="text-white" size={20} />
-              </div>
-              <div>
-                <h1 className="text-lg sm:text-2xl font-bold text-gray-800">
-                  Mi Blog Personal
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Por María Camila Guerrero Roqueme</p>
-              </div>
+                  Mi Blog Social
             </div>
 
             {/* Right side with user info */}
@@ -75,6 +69,28 @@ export const Header: React.FC<HeaderProps> = ({ onAuthClick, currentView, onView
                     </p>
                   </div>
                   <div className="flex items-center gap-1 sm:gap-2">
+                    <button
+                      onClick={() => onViewChange('home')}
+                      className={`p-1.5 sm:p-2 rounded-full border-2 border-black transition-colors ${
+                        currentView === 'home' 
+                          ? 'bg-emerald-500 text-white' 
+                          : 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200'
+                      }`}
+                      title="Inicio"
+                    >
+                      <Home size={16} />
+                    </button>
+                    <button
+                      onClick={() => onViewChange('home')}
+                      className={`p-1.5 sm:p-2 rounded-full border-2 border-black transition-colors ${
+                        currentView === 'home' 
+                          ? 'bg-emerald-500 text-white' 
+                          : 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200'
+                      }`}
+                      title="Inicio"
+                    >
+                      <Home size={16} />
+                    </button>
                     <button
                       onClick={() => onViewChange('dashboard')}
                       className={`p-1.5 sm:p-2 rounded-full border-2 border-black transition-colors ${
