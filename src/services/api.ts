@@ -90,6 +90,7 @@ export const postsAPI = {
   },
 
   create: async (postData: { title: string; content: string; date?: string; image?: string }) => {
+  }
   create: async (postData: { title: string; content: string; date?: string; image?: string; images?: any[]; link?: string }) => {
     const response = await apiRequest('/posts', {
       method: 'POST',
@@ -99,6 +100,7 @@ export const postsAPI = {
   },
 
   update: async (id: string, postData: { title: string; content: string; date?: string; image?: string }) => {
+  }
   update: async (id: string, postData: { title: string; content: string; date?: string; image?: string; images?: any[]; link?: string }) => {
     const response = await apiRequest(`/posts/${id}`, {
       method: 'PUT',
